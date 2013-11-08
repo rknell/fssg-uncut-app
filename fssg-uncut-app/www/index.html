@@ -37,6 +37,9 @@
         <div class="app">
             <div 
                 data-role="page">
+                
+                <img  src="img/firstscreen.png" style="width:100%" />
+                
             <div id="post-body" class="container">
                     
             </div>
@@ -61,18 +64,12 @@
             app.initialize();
             var lastID=0;
             var isLoading = false;
-            console.log('last id set');
-            (function(){
-                               
-                $(window).scroll(function () {
-                    
-                console.log(isLoading);
-                if ($(window).scrollTop() + $(window).height() > $('.footer').offset().top) {
-                    //alert("footer visible");
-            if (isLoading==false){  
+            function loadimages() {
+                console.log('load images called');
+                if (isLoading==false){  
                 isLoading=true;
                 console.log(isLoading);
-            $.mobile.showPageLoadingMsg();
+                $.mobile.showPageLoadingMsg();
                     
                     var $post= $('post');
                     var $postbody = $('#post-body');
@@ -84,7 +81,7 @@
                             var rows = result.trim().split('\r\n');
                             console.log(rows.length);
                             for (i=0;i<rows.length;i++){
-                                    var cols = rows[i].split(',');
+                                    var cols = rows[i].split('^!');
 
                                     var newPost = $('#postitem').clone(true);
                                     newPost.find('.post-title').html(cols[1]);
@@ -93,16 +90,28 @@
                                     $.mobile.hidePageLoadingMsg();
                                     lastID = cols[0];
                                     console.log(lastID);
-                                }
+                                } 
                             isLoading=false;
                      });
-                } else {
-                    //alert("footer invisible");
+                
                 }
+            };
+            
+            (function(){
+                            
+                $(window).scroll(function () {
+                    
+                if ($(window).scrollTop() + $(window).height() + 1000 > $('.footer').offset().top) {
+                    loadimages();
                 }
                 
             });
+            
             })();
+            
+            
+            
+            //loadimages();
         </script>
     </body>
 </html>
